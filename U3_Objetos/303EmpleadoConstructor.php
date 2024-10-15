@@ -4,13 +4,12 @@
         private string $nombre;
         private string $apellidos;
         private float $sueldo;
-        private $telefonos;
+        private $telefonos = array();
 
-        public function __construct(string $nombre, string $apellidos, float $sueldo) {
+        public function __construct(string $nombre, string $apellidos, float $sueldo=1000) {
             $this->nombre = $nombre;
             $this->apellidos = $apellidos;
             $this->sueldo = $sueldo;
-            $this->telefonos = array();
         }
 
         public function getNombre(): string {
@@ -23,12 +22,6 @@
             return $this->sueldo;
         }
 
-        public function setNombre(string $nombre): void {
-            $this->nombre = $nombre;
-        }
-        public function setApellidos(string $apellidos): void {
-            $this->apellidos = $apellidos;
-        }
         public function setSueldo(float $sueldo): void {
             $this->sueldo = $sueldo;
         }
@@ -54,22 +47,8 @@
         }
 
         public function vaciarTelefonos(): void{
-            // $this->telefonos = array(); otra manera
-            // $this->telefonos = []; otra manera
-            array_splice($this->telefonos, 0, count($this->telefonos));
+            $this->telefonos = array();
         }
     }
-
-    $em1=new Empleado("Daniel", "Lorca",4500);
-    $em1->aniadirTelefono(666333888);
-    $em1->aniadirTelefono(662778330);
-    echo $em1->listarTelefonos();
-
-    $em1->vaciarTelefonos();
-    $em1->aniadirTelefono(666333888);
-    $em1->aniadirTelefono(662778330);
-    echo $em1->listarTelefonos();
-
-
     
 ?>

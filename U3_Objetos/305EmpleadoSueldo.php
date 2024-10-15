@@ -1,17 +1,13 @@
 <?php
     declare(strict_types=1);
     class Empleado {
-        private string $nombre;
-        private string $apellidos;
-        private float $sueldo;
-        private $telefonos;
+        private static $sueldoTope=3333;
 
-        public function __construct(string $nombre, string $apellidos, float $sueldo) {
-            $this->nombre = $nombre;
-            $this->apellidos = $apellidos;
-            $this->sueldo = $sueldo;
-            $this->telefonos = array();
-        }
+        public function __construct(
+            private string $nombre, 
+            private string $apellidos, 
+            private float $sueldo=1000,
+            private $telefonos = array()) {}
 
         public function getNombre(): string {
             return $this->nombre;
@@ -22,13 +18,14 @@
         public function getSueldo(): float {
             return $this->sueldo;
         }
+        public function setSueldoTope(float $sueldoTope): void {
+            self::$sueldoTope = $sueldoTope;
+        } 
 
-        public function setNombre(string $nombre): void {
-            $this->nombre = $nombre;
+        public function getSueldoTope(): float {
+            return self::$sueldoTope;
         }
-        public function setApellidos(string $apellidos): void {
-            $this->apellidos = $apellidos;
-        }
+
         public function setSueldo(float $sueldo): void {
             $this->sueldo = $sueldo;
         }
@@ -38,7 +35,7 @@
         }
 
         public function debePagarImpuestos(): bool {
-            return $this->sueldo > 3333;
+            return $this->sueldo > self::$sueldoTope;
         }
 
         public function aniadirTelefono(int $tel) : void {
@@ -54,13 +51,14 @@
         }
 
         public function vaciarTelefonos(): void{
-            // $this->telefonos = array(); otra manera
-            // $this->telefonos = []; otra manera
-            array_splice($this->telefonos, 0, count($this->telefonos));
+            $this->telefonos = array();
         }
     }
-
-    $em1=new Empleado("Daniel", "Lorca",4500);
+    
+    $em1=new Empleado("Daniel", "Lorca");
+    $em1->setSueldoTope(5000);
+    echo $em1->debePagarImpuestos()?"PAGA":"No pagues guapeton";
+    echo "<br>";
     $em1->aniadirTelefono(666333888);
     $em1->aniadirTelefono(662778330);
     echo $em1->listarTelefonos();
@@ -70,6 +68,4 @@
     $em1->aniadirTelefono(662778330);
     echo $em1->listarTelefonos();
 
-
-    
 ?>
