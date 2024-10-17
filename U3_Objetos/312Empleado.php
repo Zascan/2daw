@@ -1,20 +1,21 @@
 <?php
     declare(strict_types=1);
-    class Empleado {
+    include_once("312Trabajador.php");
+    class Empleado extends Trabajador {
         private static $sueldoTope=3333;
 
         public function __construct(
-            private string $nombre, 
-            private string $apellidos, 
             private float $sueldo=1000,
-            private $telefonos = array()) {}
+            private int $horasTrabajadas=0,
+            private float $precioHora=0;
+            ) {
+                parent::__construct($telefonos);
+            }
+        
+        public function calcularSueldo(): float{
+            return $this->horasTrabajadas*$this->precioHora;
+        }
 
-        public function getNombre(): string {
-            return $this->nombre;
-        }
-        public function getApellidos(): string {
-            return $this->apellidos;
-        }
         public function getSueldo(): float {
             return $this->sueldo;
         }
@@ -30,12 +31,10 @@
             $this->sueldo = $sueldo;
         }
 
-        public function getNombreCompleto(): string {
-            return $this->nombre . " " .$this->apellidos;
-        }
-
         public function debePagarImpuestos(): bool {
-            return $this->sueldo > self::$sueldoTope;
+            if($this->edad >=21){
+             return $this->sueldo > self::$sueldoTope;
+            }
         }
 
         public function aniadirTelefono(int $tel) : void {
@@ -55,16 +54,14 @@
         }
 
         public static function toHtml(Empleado $emp): string{
-            $cadena = "<p>Nombre del empleado: " . $emp->getNombreCompleto() ."</p>";
-            $cadena .= "<p>Sueldo: " . $emp->getSueldo() ."</p>";
+            $cadena = "<p>Nombre del empleado: " . $emp->getNombreCompleto ."</p>";
+            $cadena .= "<p>Sueldo: " . $emp->getSueldo ."</p>";
 
             $telefonos = $emp->getTelefonos();
-            if(!empty($telefonos)){
+            if(!empty($teñefonos)){
                 $cadena .= "<ol>";
                 foreach($telefonos as $telefono){
-                    $cadena .= "<li>";
-                    $cadena .= $telefono . ", ";
-                    $cadena .= "</li>";
+                    $cadena .= "<li>". $telefono . "</li>";
                 }
                 $cadena .= "</ol>";
             }else{
@@ -72,19 +69,10 @@
             }
             return $cadena;
         }
-    }
-    
-    $em1=new Empleado("Daniel", "Lorca");
-    $em1->setSueldoTope(5000);
-    echo $em1->debePagarImpuestos()?"PAGA":"No pagues guapeton";
-    echo "<br>";
-    $em1->aniadirTelefono(666333888);
-    $em1->aniadirTelefono(662778330);
-    echo $em1->listarTelefonos();
 
-    $em1->vaciarTelefonos();
-    $em1->aniadirTelefono(666333888);
-    $em1->aniadirTelefono(662778330);
-    echo $em1->listarTelefonos();
+        function public __toString(): string{
+            return "<p> Nombre:". parent::getNombreCompleto(). ". Sueldo: ". $this->getSueldo(). ". Telefonos: ". $this->listarTelefonos()."</p>"
+        }
+    }
 
 ?>
